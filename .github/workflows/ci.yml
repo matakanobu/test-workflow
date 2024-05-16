@@ -26,4 +26,6 @@ jobs:
         with:
           ref: ${{ steps.get-branch.outputs.branch }}
       - name: Echo
-        run: echo "Branch: ${{ steps.get-branch.outputs.branch }}"
+        id: run
+        run: echo "for PR: ${{ steps.get-branch.outputs.branch }}"
+
