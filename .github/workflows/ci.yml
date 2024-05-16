@@ -8,7 +8,8 @@ jobs:
     if: ${{ github.event.issue.pull_request  && startsWith(github.event.comment.body, '/train') }}
     runs-on: ubuntu-latest
     steps:
-      - id: get-branch
+      - name: GET branch
+        id: get-branch
 	run: echo ::set-output name=branch::$(gh pr view $PR_NO --repo $REPO --json headRefName --jq '.headRefName')
 	env:
 	  REPO: ${{ github.repository }}
