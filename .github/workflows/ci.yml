@@ -16,13 +16,14 @@ jobs:
           repo=${{ github.repository }}
           api_url="https://api.github.com/repos/$repo/pulls/$pr_number"
           branch=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $api_url | jq -r .head.ref)
-          echo "branch=$branch" >> $GITHUB_ENV
+          echo "::set-output name=branch::$branch"
+          echo "Branch: $branch"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: ${{ env.branch }}
+          ref: ${{ steps.get-branch.outputs.branch }}
       - name: Echo
-        run: echo "Branch: ${{ env.branch }}"
+        run: echo "Branch: ${{ steps.get-branch.outputs.branch }}"
