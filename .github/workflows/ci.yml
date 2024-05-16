@@ -25,4 +25,4 @@ jobs:
         with:
           ref: ${{ env.branch }}
       - name: Echo
-        run: echo "Branch: ${{ env.branch }}
+        run: echo "Branch: ${{ env.branch }}"
