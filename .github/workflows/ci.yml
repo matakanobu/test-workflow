@@ -5,7 +5,8 @@ on: issue_comment
 jobs:
   ci:
     name: ci
-    if: ${{ github.event.issue.pull_request && github.event.comment.body.startsWith('/train') }}
+    if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/train') }}
+
     runs-on: ubuntu-latest
     steps:
       - name: Install GitHub CLI
