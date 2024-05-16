@@ -9,24 +9,18 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Install GitHub CLI
-        run: sudo apt-get install gh
-
       - name: GET branch
         id: get-branch
         run: |
-          branch=$(gh pr view $PR_NO --repo $REPO --json headRefName --jq '.headRefName')
-          echo "::set-output name=branch::$branch"
+          pr_number=${{ github.event.issue.number }}
+          repo=${{ github.repository }}
+          api_url="https://api.github.com/repos/$repo/pulls/$pr_number"
+          branch=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $api_url | jq -r .head.ref)
+          echo "branch=$branch" >> $GITHUB_ENV
         env:
-          REPO: ${{ github.repository }}
-          PR_NO: ${{ github.event.issue.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: ${{ steps.get-branch.outputs.branch }}
-
-      - name: echo
-        run: echo "Brahch ${{ steps.get-branch.outputs.branch }}"
-
+          ref: ${{ env.branch }}
