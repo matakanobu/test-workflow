@@ -24,3 +24,5 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ env.branch }}
+      - name: Echo
+        run: echo "Branch: ${{ env.branch }}
