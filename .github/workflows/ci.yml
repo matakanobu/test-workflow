@@ -9,16 +9,16 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: GET branch
+      - name: Get Branch
         id: get-branch
         run: |
-          pr_number=${{ github.event.issue.number }}
-          repo=${{ github.repository }}
-          api_url="https://api.github.com/repos/$repo/pulls/$pr_number"
+          api_url="https://api.github.com/repos/$REPO/pulls/$PR_NO"
           branch=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $api_url | jq -r .head.ref)
           echo "::set-output name=branch::$branch"
           echo "Branch: $branch"
         env:
+          REPO: ${{ github.repository }}
+          PR_NO: ${{ github.event.issue.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout
