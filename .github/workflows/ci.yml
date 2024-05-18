@@ -23,7 +23,7 @@ jobs:
 
       - id: get-branch2
         run: |
-          branch::$(gh pr view $PR_NO --repo $REPO --json headRefName --jq '.headRefName')
+          branch=$(gh pr view $PR_NO --repo $REPO --json headRefName --jq '.headRefName')
           echo "Branch: $branch"
         env:
           REPO: ${{ github.repository }}
