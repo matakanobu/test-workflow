@@ -30,6 +30,23 @@ jobs:
           PR_NO: ${{ github.event.issue.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: actions/github-script@v3
+        id: get-pr
+        with:
+          script: |
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+            try {
+              const result = await github.pulls.get(request)
+              return result.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
+
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -37,5 +54,5 @@ jobs:
           ref: ${{ steps.get-branch.outputs.branch }}
       - name: Echo
         id: run
-        run: echo ${{ steps.get-branch.outputs.branch }}
+        run: echo ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
 
