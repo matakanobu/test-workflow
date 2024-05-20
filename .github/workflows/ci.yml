@@ -21,6 +21,9 @@ jobs:
           PR_NO: ${{ github.event.issue.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get username
+        run: echo ${{ github.event.comment.user.login }}
+
       - id: get-branch2
         run: |
           branch=$(gh pr view $PR_NO --repo $REPO --json headRefName --jq '.headRefName')
