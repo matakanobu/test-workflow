@@ -41,6 +41,9 @@ jobs:
         main_version=$(yq e '.model_version' main_config.yaml)
         develop_version=$(yq e '.model_version' develop_config.yaml)
 
+        echo "::set-output name=main_version::${main_version}"
+        echo "::set-output name=develop_version::${develop_version}"
+
         IFS='.' read -ra main_parts <<< "$main_version"
         IFS='.' read -ra develop_parts <<< "$develop_version"
 
@@ -83,5 +86,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        gh pr comment ${{ github.event.pull_request.number }} --body "The model version in develop is not higher than in main. No merge performed."
+        comment=$(echo -e "The model version in develop is not higher than in main. No merge performed.\nmain:    ${{ steps.compare_versions.outputs.main_version }}\ndevelop: ${{ steps.compare_versions.outputs.develop_version }}")
+        gh pr comment ${{ github.event.pull_request.number }} --body  "${comment}"
         gh pr close ${{ github.event.pull_request.number }}
