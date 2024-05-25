@@ -7,7 +7,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
   packages: read
   pull-requests: read
 
@@ -23,13 +23,16 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Fetch all branches
+      run: git fetch --all
+
     - name: Get main config.yaml
       run: |
-        git show main:config.yaml > main_config.yaml
+        git show origin/main:config.yaml > main_config.yaml
 
     - name: Get develop config.yaml
       run: |
-        git show develop:config.yaml > develop_config.yaml
+        git show origin/develop:config.yaml > develop_config.yaml
 
     - name: Compare model versions
       id: compare_versions
@@ -54,9 +57,12 @@ jobs:
 
     - name: Merge develop into main
       if: steps.compare_versions.outputs.merge == 'true'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.name "${{ github.actor }}"
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
         git checkout main
-        git merge develop --no-ff -m "Merging develop into main"
+        git merge origin/develop --no-ff -m "Merging develop into main"
+        git push origin main
