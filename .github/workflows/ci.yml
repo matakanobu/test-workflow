@@ -63,4 +63,4 @@ jobs:
 
         git checkout main
         git merge origin/develop --no-ff -m "Merging develop into main"
-	git push origin main
+        git push origin main
