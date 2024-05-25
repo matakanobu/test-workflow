@@ -41,8 +41,8 @@ jobs:
         main_version=$(yq e '.model_version' main_config.yaml)
         develop_version=$(yq e '.model_version' develop_config.yaml)
 
-        echo "::set-output name=main_version::${{ main_version }}"
-        echo "::set-output name=develop_version::${{ develop_version }}"
+        echo "::set-output name=main_version::${main_version}"
+        echo "::set-output name=develop_version::${develop_version}"
 
         IFS='.' read -ra main_parts <<< "$main_version"
         IFS='.' read -ra develop_parts <<< "$develop_version"
