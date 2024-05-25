@@ -24,7 +24,7 @@ jobs:
         fetch-depth: 0
 
     - name: Fetch all branches
-      run: git fetch main
+      run: git fetch --all
 
     - name: Get main config.yaml
       run: |
