@@ -86,7 +86,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        echo -e "The model version in develop is not higher than in main. No merge performed.\nmain: ${{ steps.compare_versions.outputs.main_version }}\ndevelop: ${{ steps.compare_versions.outputs.develop_version }}" > comment
-        comment=$(cat comment)
+        comment=$(echo -e "The model version in develop is not higher than in main. No merge performed.\nmain: ${{ steps.compare_versions.outputs.main_version }}\ndevelop: ${{ steps.compare_versions.outputs.develop_version }}")
         gh pr comment ${{ github.event.pull_request.number }} --body  "${comment}"
         gh pr close ${{ github.event.pull_request.number }}
