@@ -78,8 +78,8 @@ jobs:
       run: |
         git checkout develop
         git merge main --no-ff -m "Merging main into develop to sync changes"
-        git push origin develop
-        : # gh pr comment ${{ github.event.pull_request.number }} --body "Trigger CodeBuild start-build."
+        : # git push origin develop
+        gh pr comment ${{ github.event.pull_request.number }} --body "Trigger CodeBuild start-build."
 
     - name: Comment on PR and close if no merge
       if: steps.compare_versions.outputs.merge == 'false'
