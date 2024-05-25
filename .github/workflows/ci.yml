@@ -73,3 +73,9 @@ jobs:
         git checkout develop
         git merge main --no-ff -m "Merging main into develop to sync changes"
         git push origin develop
+
+    - name: Comment on PR if no merge
+      if: steps.compare_versions.outputs.merge == 'false'
+      run: |
+        gh pr comment ${{ github.event.pull_request.number }} --body "The model version in develop is not higher than in main. No merge performed."
+
