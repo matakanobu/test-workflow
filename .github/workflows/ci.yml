@@ -66,3 +66,10 @@ jobs:
         git checkout main
         git merge origin/develop --no-ff -m "Merging develop into main"
         git push origin main
+
+    - name: Merge main into develop
+      if: steps.compare_versions.outputs.merge == 'true'
+      run: |
+        git checkout develop
+        git merge main --no-ff -m "Merging main into develop to sync changes"
+        git push origin develop
