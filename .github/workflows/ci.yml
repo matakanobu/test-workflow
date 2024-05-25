@@ -23,6 +23,9 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Fetch all branches
+      run: git fetch --all
+
     - name: Get main config.yaml
       run: |
         git show main:config.yaml > main_config.yaml
