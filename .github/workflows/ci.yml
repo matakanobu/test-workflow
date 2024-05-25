@@ -18,23 +18,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout main branch
+    - name: Checkout
       uses: actions/checkout@v2
-      with:
-        ref: main
-        path: main_branch
 
-    - name: Checkout develop branch
-      uses: actions/checkout@v2
-      with:
-        ref: develop
-        path: develop_branch
+    - name: Get main config.yaml
+      run: |
+        git show main:config.yaml > main_config.yaml
+
+    - name: Get develop config.yaml
+      run: |
+        git show develop:config.yaml > develop_config.yaml
 
     - name: Compare model versions
       id: compare_versions
       run: |
-        main_version=$(yq e '.model_version' main_branch/config.yaml)
-        develop_version=$(yq e '.model_version' develop_branch/config.yaml)
+        main_version=$(yq e '.model_version' main_config.yaml)
+        develop_version=$(yq e '.model_version' develop_config.yaml)
 
         IFS='.' read -ra main_parts <<< "$main_version"
         IFS='.' read -ra develop_parts <<< "$develop_version"
