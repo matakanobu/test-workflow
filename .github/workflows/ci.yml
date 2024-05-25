@@ -2,14 +2,15 @@ name: ci
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened]
     branches:
       - main
 
 permissions:
   contents: write
   packages: read
-  pull-requests: read
+  pull-requests: write
+  issues: write
 
 jobs:
   ci:
@@ -73,3 +74,11 @@ jobs:
         git checkout develop
         git merge main --no-ff -m "Merging main into develop to sync changes"
         git push origin develop
+
+    - name: Comment on PR and close if no merge
+      if: steps.compare_versions.outputs.merge == 'false'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh pr comment ${{ github.event.pull_request.number }} --body "The model version in develop is not higher than in main. No merge performed."
+        gh pr close ${{ github.event.pull_request.number }}
