@@ -80,5 +80,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        gh pr comment ${{ github.event.pull_request.number }} --body "The model version in develop is not higher than in main. No merge performed."
+        gh pr comment ${{ github.event.issue.number }} --body "The model version in develop is not higher than in main. No merge performed."
 
