@@ -28,11 +28,11 @@ jobs:
 
     - name: Get main config.yaml
       run: |
-        git show main:config.yaml > main_config.yaml
+        git show origin/main:config.yaml > main_config.yaml
 
     - name: Get develop config.yaml
       run: |
-        git show develop:config.yaml > develop_config.yaml
+        git show origin/develop:config.yaml > develop_config.yaml
 
     - name: Compare model versions
       id: compare_versions
